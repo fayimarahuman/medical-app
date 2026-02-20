@@ -1,125 +1,118 @@
-import 'package:flutter/material.dart'; 
-import 'home_screen.dart'; 
-class OnboardingScreen extends StatefulWidget { 
-@override 
-_OnboardingScreenState createState() => _OnboardingScreenState(); 
-} 
- 
- 
-   
- 
- 
-class _OnboardingScreenState extends State<OnboardingScreen> { 
-  final PageController _controller = PageController(); 
-  bool isLastPage = false; 
- 
-  @override 
-  Widget build(BuildContext context) { 
-    return Scaffold( 
-      body: Container( 
-        padding: EdgeInsets.all(20), 
-        child: PageView( 
-          controller: _controller, 
-          onPageChanged: (index) { 
-            setState(() => isLastPage = index == 2); 
-          }, 
-          children: [ 
-            buildPage( 
-              image: 'assets/onboard1.png', 
-              title: 'Welcome to My App', 
-              description: 'Easily manage your tasks anywhere,   anytime.', 
-            ), 
-            buildPage( 
-              image: 'assets/onboard2.png', 
-              title: 'Stay Organized', 
-              description: 'Track your daily progress with smart reminders.', 
-            ), 
-            buildPage( 
-              image: 'assets/onboard3.png', 
- 
- 
-   
- 
-              title: 'Achieve Your Goals', 
-              description: 'Turn your plans into action effortlessly.', 
-            ), 
-          ], 
-        ), 
-      ), 
-      bottomSheet: isLastPage 
-          ? TextButton( 
-              onPressed: () { 
-                Navigator.pushReplacement( 
-                  context, 
-                  MaterialPageRoute(builder: (_) => HomeScreen()), 
-                ); 
-              }, 
-              child: Container( 
-                width: double.infinity, 
-                height: 60, 
-                color: Colors.deepPurple, 
-                alignment: Alignment.center, 
-                child: Text( 
-                  'Get Started', 
-                  style: TextStyle(color: Colors.white, fontSize: 20), 
-                ), 
-              ), 
-            ) 
-          : Container( 
-              height: 60, 
-              child: Row( 
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-                children: [ 
-  
- 
-   
- 
-                  TextButton( 
-                    child: Text('Skip'), 
-                    onPressed: () => _controller.jumpToPage(2), 
-                  ), 
-                  Row( 
-                    children: [ 
-                      TextButton( 
-                        child: Text('Next'), 
-                        onPressed: () => _controller.nextPage( 
-                          duration: Duration(milliseconds: 500), 
-                          curve: Curves.easeInOut, 
-                        ), 
-                      ), 
-                    ], 
-                  ), 
-                ], 
-              ), 
-            ), 
-    ); 
-  } 
- 
-  Widget buildPage({ 
-    required String image, 
-    required String title, 
-    required String description, 
-  }) { 
-    return Column( 
-      mainAxisAlignment: MainAxisAlignment.center, 
-      children: [ 
-        Image.asset(image, height: 300), 
-        SizedBox(height: 30), 
-   
- 
-   
- 
-        Text( 
-          title, 
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold), 
-        ), 
-        SizedBox(height: 15), 
-        Text( 
-          description, 
-          textAlign: TextAlign.center, 
-          style: TextStyle(fontSize: 18, color: Colors.grey[700]), 
-        ), 
-      ], 
-    ); 
-  } 
-} 
+import 'package:flutter/material.dart';
+import 'auth/auth_screen.dart';
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
+  @override
+  _OnboardingScreenState createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+
+  final List<Map<String, String>> onboardingData = [
+    {
+      'image': 'assets/images/welcome.PNG',
+      'title': 'Welcome',
+      'subtitle': 'Welcome to our Health App'
+    },
+    {
+      'image': 'assets/images/trackhealth.png',
+      'title': 'Track Health',
+      'subtitle': 'Monitor your health easily'
+    },
+    {
+      'image': 'assets/images/support.png',
+      'title': 'Get Support',
+      'subtitle': 'Get assistance anytime'
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: onboardingData.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              itemBuilder: (_, index) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      onboardingData[index]['image']!,
+                      width: 300,
+                      height: 300,
+                      fit: BoxFit.contain,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      onboardingData[index]['title']!,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      onboardingData[index]['subtitle']!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              onboardingData.length,
+              (index) => Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                width: _currentPage == index ? 20 : 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: _currentPage == index ? Colors.blue : Colors.grey,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: ElevatedButton(
+              onPressed: () {
+                if (_currentPage == onboardingData.length - 1) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AuthScreen()),
+                  );
+                } else {
+                  _controller.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                }
+              },
+              child: Text(
+                _currentPage == onboardingData.length - 1
+                    ? 'Get Started'
+                    : 'Next',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -2,18 +2,6 @@
 
 This is my first mobile app which allows easy communication between the doctors and the patients.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 <img width="333" height="606" alt="screen1" src="https://github.com/user-attachments/assets/c4ffd800-efb3-4b9d-a43b-af1c7a1b5259" />
 <img width="336" height="609" alt="screen2" src="https://github.com/user-attachments/assets/3a0359de-1946-4093-b4f4-194de4ef3558" />
 <img width="353" height="606" alt="screen 3" src="https://github.com/user-attachments/assets/19e4a2b3-b226-4165-aa37-e9a164810758" />
